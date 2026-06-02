@@ -328,44 +328,6 @@ Important interpretation note: the Markov severity representation is a **heurist
 
 Figure numbering may need to be finalized during manuscript preparation because some supplementary figure filenames currently contain overlapping `S3` labels.
 
-## Suggested Repository Structure
-
-```text
-.
-├── README.md
-├── manuscript/
-│   └── main_manuscript.tex
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   └── cox/
-├── notebooks/
-│   ├── 09_combined_model_training_csv_export.ipynb
-│   ├── 10_make_figure2_and_overlap_revised_v8_170mm.ipynb
-│   ├── 01_compute_figure3_results_only_v6_with_cox_folder.ipynb
-│   ├── 02_make_figure3_main_and_supplementary_170mm_v9_feature_column_rank.ipynb
-│   ├── make_figure4_explanation_reliability_spurious_stress.ipynb
-│   ├── make_figure4_main_170mm_publication_ready_v6.ipynb
-│   ├── 01_temporal_modeling_medformer_markov_colab.ipynb
-│   └── 02_temporal_figures_170mm_colab.ipynb
-├── results/
-│   ├── model_performance/
-│   ├── feature_importance/
-│   ├── explanation_reliability/
-│   ├── fairness/
-│   └── temporal/
-├── figures/
-│   ├── Figure_1/
-│   ├── Figure_2/
-│   ├── Figure_3/
-│   ├── Figure_4/
-│   ├── Figure_5/
-│   └── Figure_6/
-└── requirements.txt
-```
-
-This structure is suggested for clarity. Actual notebook names and folder paths may differ depending on the local analysis environment.
-
 ## Reproducibility Notes
 
 To reproduce the analysis, follow the development-to-external-test design carefully.
@@ -426,8 +388,8 @@ The main contribution is an **explanation reliability workflow** for auditing hi
 ## Authors
 
 - Junseo Park, The University of British Columbia
-- Tia Sajeev, The University of British Columbia
 - Steven Huang, The University of British Columbia
+- Tia Sajeev, The University of British Columbia
 - Levi Dhanaraj, The University of British Columbia
 - Laura Luo, The University of British Columbia
 
