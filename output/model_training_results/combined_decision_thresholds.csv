@@ -1,0 +1,4 @@
+model,decision_threshold
+logistic_regression,0.5
+xgboost_auc_optimized,0.5
+mlp,0.30999999999999994

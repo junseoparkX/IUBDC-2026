@@ -1,0 +1,17 @@
+from_state,from_label,to_state,to_label,death_minus_survivor_probability
+0,Stable,0,Stable,-0.16126706757965226
+0,Stable,1,Moderate risk,0.05558226948361328
+0,Stable,2,High risk,0.04792719860961424
+0,Stable,3,Critical,0.057757599486424734
+1,Moderate risk,0,Stable,-0.11209810962087341
+1,Moderate risk,1,Moderate risk,-0.04007318032716761
+1,Moderate risk,2,High risk,0.06014036486349536
+1,Moderate risk,3,Critical,0.09203092508454565
+2,High risk,0,Stable,-0.05630994106465254
+2,High risk,1,Moderate risk,-0.09166751278457122
+2,High risk,2,High risk,0.022882337255159424
+2,High risk,3,Critical,0.12509511659406433
+3,Critical,0,Stable,-0.02202166482237289
+3,Critical,1,Moderate risk,-0.06245248029116528
+3,Critical,2,High risk,-0.11462180220283005
+3,Critical,3,Critical,0.19909594731636826

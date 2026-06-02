@@ -1,0 +1,2 @@
+model,best_config_id,hidden_dims,dropout_rate,learning_rate,weight_decay,batch_size,pos_weight_mode,pos_weight_value,max_epochs,patience,best_epoch,decision_threshold,selection_rule,brier_penalty,fit_seconds
+mlp,0,[64],0.1,0.001,0.001,128,none,1.0,150,12,7,0.30999999999999994,val_roc_auc - BRIER_PENALTY * val_brier_score,0.25,57.604204177856445

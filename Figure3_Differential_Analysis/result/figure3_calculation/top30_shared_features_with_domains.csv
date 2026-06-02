@@ -1,0 +1,13 @@
+model_a,model_b,feature,rank_a,rank_b,mean_rank,clinical_domain,rank_logistic_regression,rank_xgboost_auc_optimized,score_logistic_regression,score_xgboost_auc_optimized
+logistic_regression,xgboost_auc_optimized,GCS_last,1,1,1.0,Neurological,1.0,1.0,0.6640620491008054,0.04611026
+logistic_regression,xgboost_auc_optimized,BUN_last,2,2,2.0,Renal,2.0,2.0,0.5445235578533112,0.017996414
+logistic_regression,xgboost_auc_optimized,static_Age,4,9,6.5,Demographic,4.0,9.0,0.4041870883642083,0.008915722
+logistic_regression,xgboost_auc_optimized,Lactate_last,8,11,9.5,Metabolic/Temperature,8.0,11.0,0.2515134603643317,0.007995414
+logistic_regression,xgboost_auc_optimized,Urine_mean,6,14,10.0,Renal,6.0,14.0,0.2842193907242053,0.007896536
+logistic_regression,xgboost_auc_optimized,GCS_mean,3,19,11.0,Neurological,3.0,19.0,0.4844792546671656,0.0068198913
+logistic_regression,xgboost_auc_optimized,Urine_total,22,4,13.0,Renal,22.0,4.0,0.1796793466266229,0.014538783
+logistic_regression,xgboost_auc_optimized,Creatinine_median,21,8,14.5,Renal,21.0,8.0,0.1812010812913088,0.010192884
+logistic_regression,xgboost_auc_optimized,GCS_std,11,27,19.0,Neurological,11.0,27.0,0.2174648332752785,0.006255499
+logistic_regression,xgboost_auc_optimized,PaO2_median,17,30,23.5,Respiratory,17.0,30.0,0.1917851383660521,0.0061100083
+logistic_regression,xgboost_auc_optimized,Temp_median,24,24,24.0,Metabolic/Temperature,24.0,24.0,0.1721570029819299,0.006556897
+logistic_regression,xgboost_auc_optimized,HR_mean,29,22,25.5,Cardiovascular,29.0,22.0,0.1628147974757242,0.006734416

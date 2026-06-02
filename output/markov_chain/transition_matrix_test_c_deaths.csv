@@ -1,0 +1,17 @@
+from_state,from_label,to_state,to_label,transition_probability
+0,Stable,0,Stable,0.5288966725043783
+0,Stable,1,Moderate risk,0.2574430823117338
+0,Stable,2,High risk,0.1436077057793345
+0,Stable,3,Critical,0.07005253940455342
+1,Moderate risk,0,Stable,0.1451766953199618
+1,Moderate risk,1,Moderate risk,0.3858643744030564
+1,Moderate risk,2,High risk,0.3123209169054441
+1,Moderate risk,3,Critical,0.15663801337153774
+2,High risk,0,Stable,0.040978941377347755
+2,High risk,1,Moderate risk,0.2060330108138873
+2,High risk,2,High risk,0.42970973249857713
+2,High risk,3,Critical,0.3232783153101878
+3,Critical,0,Stable,0.012745098039215686
+3,Critical,1,Moderate risk,0.06045751633986928
+3,Critical,2,High risk,0.2042483660130719
+3,Critical,3,Critical,0.7225490196078431

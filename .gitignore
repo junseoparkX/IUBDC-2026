@@ -1,0 +1,15 @@
+﻿# Large generated data files
+Figure3_Differential_Analysis/data/time_series_train_a_plus_b_train_c_test.csv
+Figure3_Differential_Analysis/data/time_series_test_a_plus_b_train_c_test.csv
+Figure6_Medformer/data/time_series_train_a_plus_b_train_c_test.csv
+Figure6_Medformer/data/time_series_test_a_plus_b_train_c_test.csv
+output/time_series_train_a_plus_b_train_c_test.csv
+output/time_series_test_a_plus_b_train_c_test.csv
+
+# Model/checkpoint artifacts
+*.pt
+*.joblib
+*.pkl
+
+# Windows metadata
+desktop.ini

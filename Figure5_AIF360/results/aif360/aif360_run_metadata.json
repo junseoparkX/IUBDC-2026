@@ -1,0 +1,25 @@
+{
+  "primary_model": "XGBoost",
+  "aif360_available": false,
+  "aif360_import_error": "No module named 'aif360'",
+  "positive_label": 1,
+  "positive_label_meaning": "in-hospital death / predicted high-risk flag",
+  "aif360_usage": "post-hoc fairness metric audit only; no AIF360 fairness-mitigation preprocessing was applied",
+  "input_files": {
+    "X_train": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\data\\X_train.csv",
+    "X_test": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\data\\X_test.csv",
+    "y_train": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\data\\y_train.csv",
+    "y_test": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\data\\y_test.csv",
+    "cohort_distribution_dataset": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\data\\cohort_distribution_dataset.csv"
+  },
+  "output_files": [
+    "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\results\\aif360\\aif360_confusion_rates_primary_model.csv",
+    "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\results\\aif360\\aif360_fairness_metrics_primary_model.csv",
+    "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\results\\aif360\\aif360_observed_vs_predicted_primary_model.csv",
+    "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\results\\aif360\\aif360_threshold_sensitivity_primary_model.csv",
+    "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\results\\aif360\\cohort_subgroup_composition.csv",
+    "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\results\\aif360\\model_performance_external_test.csv",
+    "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\results\\aif360\\prediction_outputs_external_test.csv",
+    "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\AIF360\\results\\aif360\\subgroup_performance_primary_model.csv"
+  ]
+}

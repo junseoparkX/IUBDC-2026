@@ -1,0 +1,49 @@
+stress_type,model,domain,proportion
+Gaussian noise,Linear SVM,Cardiovascular,0.05
+Gaussian noise,Linear SVM,Hematologic,0.155
+Gaussian noise,Linear SVM,Measurement process,0.33999999999999997
+Gaussian noise,Linear SVM,Metabolic / acid-base,0.21000000000000002
+Gaussian noise,Linear SVM,Other clinical,0.06666666666666667
+Gaussian noise,Linear SVM,Renal,0.225
+Gaussian noise,Logistic Regression,Cardiovascular,0.15
+Gaussian noise,Logistic Regression,Hematologic,0.26
+Gaussian noise,Logistic Regression,Measurement process,0.155
+Gaussian noise,Logistic Regression,Metabolic / acid-base,0.1
+Gaussian noise,Logistic Regression,Neurological,0.08
+Gaussian noise,Logistic Regression,Other clinical,0.05
+Gaussian noise,Logistic Regression,Renal,0.215
+Gaussian noise,XGBoost,Cardiovascular,0.05
+Gaussian noise,XGBoost,Hematologic,0.095
+Gaussian noise,XGBoost,Measurement process,0.05
+Gaussian noise,XGBoost,Metabolic / acid-base,0.07142857142857142
+Gaussian noise,XGBoost,Neurological,0.21000000000000002
+Gaussian noise,XGBoost,Other clinical,0.0642857142857143
+Gaussian noise,XGBoost,Renal,0.32999999999999996
+Gaussian noise,XGBoost,Respiratory,0.165
+Gaussian noise,XGBoost,Static / demographic,0.085
+Permuted feature,Linear SVM,Cardiovascular,0.05500000000000001
+Permuted feature,Linear SVM,Hematologic,0.155
+Permuted feature,Linear SVM,Measurement process,0.34500000000000003
+Permuted feature,Linear SVM,Metabolic / acid-base,0.20500000000000002
+Permuted feature,Linear SVM,Neurological,0.05
+Permuted feature,Linear SVM,Other clinical,0.05
+Permuted feature,Linear SVM,Renal,0.225
+Permuted feature,Logistic Regression,Cardiovascular,0.15
+Permuted feature,Logistic Regression,Hematologic,0.25
+Permuted feature,Logistic Regression,Measurement process,0.13999999999999999
+Permuted feature,Logistic Regression,Metabolic / acid-base,0.095
+Permuted feature,Logistic Regression,Neurological,0.1
+Permuted feature,Logistic Regression,Other clinical,0.05
+Permuted feature,Logistic Regression,Renal,0.225
+Permuted feature,XGBoost,Cardiovascular,0.05
+Permuted feature,XGBoost,Hematologic,0.08
+Permuted feature,XGBoost,Measurement process,0.05
+Permuted feature,XGBoost,Metabolic / acid-base,0.05
+Permuted feature,XGBoost,Neurological,0.21000000000000002
+Permuted feature,XGBoost,Other clinical,0.05
+Permuted feature,XGBoost,Renal,0.31999999999999995
+Permuted feature,XGBoost,Respiratory,0.185
+Permuted feature,XGBoost,Static / demographic,0.095
+Spurious proxy,Linear SVM,Injected false signal,1.0
+Spurious proxy,Logistic Regression,Injected false signal,1.0
+Spurious proxy,XGBoost,Injected false signal,1.0

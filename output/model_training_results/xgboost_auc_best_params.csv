@@ -1,0 +1,2 @@
+model,selection_metric,best_cv_roc_auc,actual_xgb_device,xgbclassifier__colsample_bytree,xgbclassifier__learning_rate,xgbclassifier__max_depth,xgbclassifier__n_estimators,xgbclassifier__subsample
+xgboost_auc_optimized,cv_roc_auc,0.8601831637387161,cuda,1.0,0.05,4,200,0.8

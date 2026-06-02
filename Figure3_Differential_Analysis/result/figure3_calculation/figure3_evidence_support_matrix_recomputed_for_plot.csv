@@ -1,0 +1,13 @@
+feature,feature_label,domain,logistic_rank,xgboost_rank,differential_selected,heldout_same_direction,coxph_supported,coxph_hr,coxph_fdr
+GCS_last,GCS last,Neurological,1,1,True,True,True,0.5837733513677433,3.408735313269851e-97
+BUN_last,BUN last,Renal,2,2,True,True,True,1.3642036127672603,1.1442161269415366e-56
+static_Age,Age,Static / demographic,4,9,True,True,True,1.5265219199862958,3.393707351256311e-33
+Lactate_last,Lactate last,Metabolic,8,11,True,True,True,1.3199518793802487,1.1274296444938722e-86
+Urine_mean,Urine mean,Renal,6,14,True,True,True,0.5221525622672373,1.5133184471677178e-30
+GCS_mean,GCS mean,Neurological,3,19,True,True,True,0.6435994754829285,1.2918363382908818e-56
+Urine_total,Urine total,Renal,22,4,True,True,True,0.5605325696936624,9.324078094540464e-36
+Creatinine_median,Creatinine median,Renal,21,8,True,True,True,1.1409676241639612,5.770310021717837e-10
+PaO2_median,PaO2 median,Respiratory,17,30,True,True,True,0.8004172111843547,1.6594467993404923e-09
+HR_mean,HR mean,Cardiovascular,29,22,True,True,True,1.1132207609915816,0.0002353836690839
+GCS_std,GCS std,Neurological,11,27,False,True,True,0.8127728086651018,6.616488239470396e-10
+Temp_median,Temp median,Metabolic,24,24,False,True,True,0.7955433499524126,3.2246727723261435e-16

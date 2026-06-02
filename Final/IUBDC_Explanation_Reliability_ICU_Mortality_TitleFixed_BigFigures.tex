@@ -1,0 +1,339 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Page size and margins, matching the STEM Fellowship template style
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{stfloats}
+\usepackage{cuted}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{authblk}
+
+\captionsetup{font=small, labelfont=bf}
+\newcommand{\feat}[1]{\texttt{\detokenize{#1}}}
+\raggedbottom
+
+%% This helper prevents the manuscript from failing to compile if a planned figure file is not uploaded yet.
+\newcommand{\safeincludegraphics}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+  \fbox{\parbox{0.90\linewidth}{\centering Missing figure file}}}%
+}
+
+%% Non-floating full-width figure block used in Results.
+%% The subsection heading is placed inside the same full-width block so figures do not overlap headings.
+\setlength\stripsep{10pt plus 2pt minus 2pt}
+\newcommand{\resultsectionfigure}[6]{%
+\clearpage
+\begin{strip}
+\subsection{#1}
+\vspace{1.1em}
+\centering
+\safeincludegraphics[width=#2\textwidth,height=#3\textheight,keepaspectratio]{#4}
+\phantomsection
+\captionof{figure}{#5}
+\label{#6}
+\end{strip}
+\vspace{0.25em}
+}
+
+%% Non-floating full-width supplementary figure block.
+%% Used after switching the appendix to one-column mode so the heading and first supplementary figure stay together.
+\newcommand{\suppwidefigure}[4]{%
+\begin{center}
+\safeincludegraphics[width=#1\textwidth,height=0.60\textheight,keepaspectratio]{#2}
+\phantomsection
+\captionof{figure}{#3}
+\label{#4}
+\end{center}
+}
+
+%% Title
+\title{
+        \usefont{OT1}{bch}{b}{n}
+        \normalfont \normalsize \textsc{STEM Fellowship 2026 Inter-University Health Data and AI Inquiry Program} \\ [10pt]
+        \huge Evaluating Explanation Reliability in ICU Mortality Risk Prediction \\
+}
+
+\selectlanguage{english}
+
+\author[1]{Junseo Park}
+\author[2]{Tia Sajeev}
+\author[3]{Steven Huang}
+\author[4]{Levi Dhanaraj}
+\author[5]{Laura Luo}
+\affil[1]{The University of British Columbia}
+\affil[2]{The University of British Columbia}
+\affil[3]{The University of British Columbia}
+\affil[4]{The University of British Columbia}
+\affil[5]{The University of British Columbia}
+
+\date{
+\small
+Corresponding author email: \underline{\hspace{6cm}}\\
+Word count: approximately 2,830
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Intensive care units generate high-dimensional physiological time-series data that can support early in-hospital mortality risk prediction. However, predictive discrimination alone does not show whether a model relies on stable, clinically meaningful, or subgroup-consistent evidence. We evaluated ICU mortality prediction models using an external validation design and an explanation reliability framework. Using the PhysioNet/Computing in Cardiology Challenge 2012 dataset, Sets A and B were used for model development and Set C was held out as an external test cohort. Patient-level summary features were used to train logistic regression, XGBoost, and multilayer perceptron models. Temporal analyses used a Medformer-based sequence model and Markov-chain trajectory features. Explanation reliability was assessed using cross-fold stability, agreement across attribution methods, false-signal sensitivity, clinical support analyses, and formula-equivalent AIF360-style subgroup metrics. This framework distinguishes accurate prediction from reliable explanation and provides a practical workflow for auditing whether ICU mortality models rely on reproducible and clinically plausible signals.
+\end{abstract}
+
+\vspace{0.5em}
+{\textbf{Keywords} \\
+ICU mortality prediction; explainable artificial intelligence; explanation reliability; calibration; clinical machine learning}
+
+\section{Introduction}
+
+Early mortality risk prediction in the intensive care unit is clinically important because timely estimates of deterioration may support monitoring, triage, and resource allocation. The PhysioNet/Computing in Cardiology Challenge 2012 dataset provides a benchmark for patient-specific in-hospital mortality prediction from early ICU data. This setting is well suited for evaluating machine learning models because ICU records contain repeated physiological measurements, laboratory values, neurological scores, renal markers, and treatment-related observations collected during the early phase of admission.
+
+However, strong predictive performance does not necessarily imply clinically meaningful reasoning. A model may achieve high AUROC or AUPRC while relying on unstable correlations, missingness artifacts, subgroup-specific shortcuts, or spurious proxy variables. This distinction is especially important in healthcare, where explanations may influence how clinicians interpret patient risk. If an explanation method highlights features that are unstable across folds or sensitive to false signals, the resulting interpretation may be misleading even when model discrimination appears strong.
+
+This study focuses on explanation reliability rather than prediction performance alone. We evaluate whether ICU mortality model explanations are stable across validation folds, consistent across attribution methods, robust to injected false signals, supported by model-independent clinical analyses, and consistent across patient subgroups. The main contribution is not a new mortality prediction model, but a reliability-oriented evaluation workflow for clinical machine learning explanations.
+
+\begin{figure*}[t]
+    \centering
+    \safeincludegraphics[width=0.90\textwidth]{Figure_1/Figure1_cohort_overview_ABC_170mm_final.png}
+    \caption{
+    \textbf{Cohort definition and external validation design.}
+    \textbf{a)} Sets A and B were combined to form the model development cohort, while Set C was reserved as an external test cohort.
+    \textbf{b)} In-hospital mortality prevalence was comparable between the development cohort and external test cohort.
+    \textbf{c)} Age distribution, ICU admission type, and dynamic measurement density were broadly similar across cohorts, supporting the use of Set C as an external evaluation cohort.
+    }
+    \label{fig:cohort_overview}
+\end{figure*}
+
+Figure~\ref{fig:cohort_overview} summarizes the study design. The external test cohort was not used for feature selection, preprocessing parameter estimation, hyperparameter tuning, threshold selection, explanation metric design, or temporal-model checkpoint selection. This separation was used to reduce optimistic bias and evaluate whether model performance and explanation behavior generalized beyond the model development cohort. Additional source-set mortality, sex distribution, static variable availability, severity-score distributions, dynamic-parameter counts, and observation-window coverage are shown in Appendix Figure~\ref{fig:supp_cohort_characteristics}.
+
+\section{Materials \& Methods}
+
+\subsection{Dataset and tabular feature construction}
+
+We used the PhysioNet/Computing in Cardiology Challenge 2012 ICU dataset to construct a binary in-hospital mortality prediction task. Sets A and B were combined as the development cohort, and Set C was reserved as the external test cohort. The development cohort contained 8,000 patients, and the external test cohort contained 4,000 patients. Raw ICU time-series records were converted into patient-level tabular feature matrices. For repeated variables, summary statistics included mean, minimum, maximum, standard deviation, first value, last value, and measurement count. Static variables such as age, sex, height, weight, and ICU admission type were retained when available. Missingness indicators were added, and outcome-related or post-outcome variables were excluded to reduce leakage risk. The final tabular matrices contained 243 numeric features.
+
+\subsection{Tabular model training and external-test evaluation}
+
+We trained logistic regression, XGBoost, and multilayer perceptron models using the development cohort and evaluated final performance on held-out Set C. Logistic regression used mean imputation, standardization, and 5-fold grid search optimizing ROC-AUC over regularization, penalty, and class-weight options. XGBoost used 5-fold ROC-AUC grid search over tree depth, learning rate, number of estimators, subsampling, and column sampling. The selected XGBoost model used max depth 4, learning rate 0.05, 200 estimators, subsampling rate 0.8, and column-sampling rate 1.0. Both logistic regression and XGBoost used a decision threshold of 0.50. The multilayer perceptron was tuned using an internal stratified development split, selected by a validation score combining ROC-AUC and Brier score, and thresholded using validation F1-score.
+
+Model performance was evaluated using AUROC, AUPRC, F1-score, Brier score, ROC curves, precision-recall curves, and quantile-binned calibration curves. For patient $i$, let $y_i \in \{0,1\}$ denote the observed mortality label and let $\hat{p}_i$ denote predicted mortality probability. The Brier score was computed as
+\begin{equation}
+\mathrm{Brier}
+=
+\frac{1}{n}
+\sum_{i=1}^{n}
+(\hat{p}_i-y_i)^2.
+\end{equation}
+
+\subsection{Differential and CoxPH clinical support analyses}
+
+To assess whether model-associated features were supported by model-independent clinical evidence, we compared deaths and survivors in the development cohort only. For each feature, we calculated a standardized mean difference, performed a Welch two-sample t-test, and applied Benjamini-Hochberg false-discovery-rate correction. For feature $j$,
+\begin{equation}
+\mathrm{SMD}_j
+=
+\frac{
+\bar{x}_{j,\mathrm{death}}-\bar{x}_{j,\mathrm{survivor}}
+}{
+s_{j,\mathrm{pooled}}
+}.
+\end{equation}
+Positive SMD values indicated higher values among deaths, while negative values indicated higher values among survivors. Differential features were selected using false discovery rate $<0.05$ and absolute SMD at least 0.20. External Set C was used only to recompute effect sizes and assess whether selected features preserved the same direction of association.
+
+We also fit univariate Cox proportional hazards models as survival-style supporting evidence. For each standardized feature $z_j$,
+\begin{equation}
+h(t \mid z_j)=h_0(t)\exp(\beta_j z_j),
+\end{equation}
+and the hazard ratio was reported as $\mathrm{HR}_j=\exp(\beta_j)$ per one-standard-deviation increase. CoxPH results were interpreted as supporting association evidence, not causal effects. Logistic regression ranks, XGBoost ranks, differential support, held-out direction consistency, and CoxPH support were integrated into a clinical evidence support matrix focused on features shared between the top-30 logistic regression and XGBoost rankings.
+
+\subsection{Explanation reliability and false-signal sensitivity}
+
+Explanation reliability was evaluated using cross-fold feature stability and agreement across attribution methods. The analysis used logistic regression coefficients, linear SVM coefficients, XGBoost gain importance, and XGBoost permutation importance. Coefficient-based explanations used absolute standardized magnitudes.
+
+Let $S_{m,k}^{(f)}$ denote the top-$k$ feature set selected by method $m$ in fold $f$. For $F$ folds, cross-fold stability was defined as mean pairwise Jaccard overlap:
+\begin{equation}
+\mathrm{Stability}_{m,k}
+=
+\frac{2}{F(F-1)}
+\sum_{1 \leq a < b \leq F}
+\frac{
+|S_{m,k}^{(a)} \cap S_{m,k}^{(b)}|
+}{
+|S_{m,k}^{(a)} \cup S_{m,k}^{(b)}|
+}.
+\end{equation}
+The main analysis used $k=20$ and $F=5$. Method agreement between two attribution methods was defined as the Jaccard overlap of their top-$k$ feature sets. Top-ranked features were mapped to neurological, renal, cardiovascular, respiratory, metabolic or acid-base, hematologic, measurement-process, static demographic, and other clinical domains.
+
+False-signal sensitivity was evaluated by injecting Gaussian noise features, permuted real-feature controls, and train-label-correlated spurious proxy features. Let $F^{(r)}$ denote injected false-signal features in repeat $r$ and $S_{m,k}^{(r)}$ denote the top-$k$ explanation features selected by method $m$. The false explanation rate was
+\begin{equation}
+\mathrm{FER}_{m,k}^{(r)}
+=
+\frac{
+|S_{m,k}^{(r)} \cap F^{(r)}|
+}{k}.
+\end{equation}
+This analysis was interpreted as a shortcut-learning stress test, not as causal evidence or proof that a real clinical spurious variable was present.
+
+\subsection{Post-hoc AIF360-style subgroup audit}
+
+Subgroup prediction behavior was evaluated using a post-hoc AIF360-style audit on external Set C. Because AIF360 was not available in the recorded execution environment, statistical parity difference, disparate impact, equal opportunity difference, and average odds difference were computed using formula-equivalent implementations. No fairness-mitigation preprocessing, in-processing, or post-processing algorithm was applied.
+
+The subgroup audit evaluated age group, sex, and ICU admission type. Since the positive label represented predicted high mortality risk rather than a favorable outcome, metrics were interpreted as subgroup differences in high-risk assignment and error rates. Let $G$ denote a subgroup attribute, $g$ a comparison subgroup, $r$ a reference subgroup, and $\hat{y}=1$ a predicted high-risk label. Statistical parity difference was $P(\hat{y}=1 \mid G=g)-P(\hat{y}=1 \mid G=r)$, and disparate impact was the corresponding ratio. Equal opportunity difference was $\mathrm{TPR}_g-\mathrm{TPR}_r$, and average odds difference was one half of the sum of subgroup TPR and FPR differences. Disparate impact was displayed as $\log_2(\mathrm{DI})$, so zero indicated the reference value.
+
+\subsection{Temporal sequence modeling and Markov trajectory analysis}
+
+Temporal analysis was performed as complementary trajectory evidence using raw ICU measurements from the first 48 hours. Measurements were divided into 12 four-hour bins, and repeated observations within each patient, bin, and variable were averaged. The temporal analysis used 36 dynamic ICU variables. For each patient, we constructed a value tensor $X \in \mathbb{R}^{n \times 12 \times 36}$ and an observation-mask tensor $M \in \{0,1\}^{n \times 12 \times 36}$. Standardization parameters were learned only from the internal training split of the development cohort. Missing standardized values were set to zero, and the final input was
+\begin{equation}
+Z=[X_{\mathrm{scaled}},M],
+\quad
+Z \in \mathbb{R}^{n \times 12 \times 72}.
+\end{equation}
+
+A Medformer-based classifier was trained for binary mortality prediction and selected using validation AUPRC. Time-bin importance was evaluated on Set C by setting the full value-plus-mask representation for each four-hour bin to zero and recomputing performance. If $\mathrm{AUPRC}_{0}$ is baseline AUPRC and $\mathrm{AUPRC}_{-b}$ is AUPRC after perturbing bin $b$, importance was defined as $I_b=\mathrm{AUPRC}_{0}-\mathrm{AUPRC}_{-b}$.
+
+We also constructed a rule-based Markov-chain severity representation. For each four-hour bin, a severity score was calculated using predefined abnormalities in neurological, hemodynamic, renal, respiratory, metabolic, electrolyte, and temperature variables. Cutoffs were estimated from internal-training quartiles and applied unchanged to validation and Set C to assign Stable, Moderate, High, or Critical states. Transition probabilities were summarized as $P_{ab}=P(s_{t+1}=b \mid s_t=a)$, and death-minus-survivor differences were computed as $\Delta P_{ab}=P_{ab}^{\mathrm{death}}-P_{ab}^{\mathrm{survivor}}$. The Markov severity representation was treated as a heuristic trajectory summary, not as a validated clinical severity score.
+
+
+\section{Results}
+
+\resultsectionfigure{External-test performance and calibration}{0.94}{0.62}{Figure_2/Figure2_model_performance_calibration_170mm.png}{
+\textbf{External-test discrimination and calibration of ICU mortality prediction models.}
+\textbf{a)} Receiver operating characteristic curves compare discrimination across logistic regression, XGBoost, and multilayer perceptron models on external Set C.
+\textbf{b)} Precision-recall curves compare performance under class imbalance, with external-test mortality prevalence shown as the reference baseline.
+\textbf{c)} External-test metric summary reports AUROC, AUPRC, F1-score, and Brier score.
+\textbf{d)} Calibration curves compare mean predicted mortality risk with observed mortality rate across probability bins.
+}{fig:model_performance}
+
+XGBoost achieved the highest AUROC (0.875), highest AUPRC (0.584), and lowest Brier score (0.087), indicating the strongest overall discrimination-calibration profile among the tabular models. The multilayer perceptron achieved the highest F1-score (0.539) and a Brier score of 0.091, while logistic regression showed competitive AUROC (0.863) and AUPRC (0.548) but a substantially higher Brier score (0.150). Precision-recall curves remained above the external-test prevalence baseline across much of the recall range. Calibration curves showed that XGBoost and the multilayer perceptron tracked observed mortality more closely than logistic regression, especially at moderate predicted-risk ranges. These observations in Figure~\ref{fig:model_performance} show why discrimination alone was insufficient for evaluating ICU mortality risk models. Model-specific logistic regression and XGBoost feature-importance summaries are provided in Appendix Figure~\ref{fig:supp_feature_importance}.
+
+\resultsectionfigure{Clinical and survival-style support for model-associated features}{0.94}{0.62}{Figure_3/Figure3_differential_coxph_support_170mm.png}{
+\textbf{Model-independent and survival-style support for mortality-associated features.}
+\textbf{a)} Differential feature analysis compares deaths and survivors using standardized mean differences and false-discovery-rate adjusted significance.
+\textbf{b)} CoxPH analysis reports hazard ratios per one-standard-deviation increase.
+\textbf{c)} Evidence support matrix summarizes logistic regression rank, XGBoost rank, differential support, held-out direction, and CoxPH support for shared top-ranked features.
+}{fig:clinical_support}
+
+Differential analysis tested 243 patient-level features in the development cohort and selected 91 mortality-associated features using false discovery rate $<0.05$ and $|\mathrm{SMD}| \geq 0.20$. Held-out effect-size validation in Set C showed same-direction replication for the selected differential features, supporting that the observed survivor-death differences were not limited to the development cohort. The top-30 logistic regression and XGBoost rankings overlapped in 12 features, with a Jaccard overlap of 0.25. These shared features included \feat{GCS_last}, \feat{BUN_last}, \feat{static_Age}, \feat{Lactate_last}, \feat{Urine_mean}, \feat{GCS_mean}, \feat{Urine_total}, \feat{Creatinine_median}, \feat{PaO2_median}, \feat{HR_mean}, \feat{GCS_std}, and \feat{Temp_median}. In the support matrix, all 12 shared features showed held-out same-direction evidence and CoxPH support, while 10 of 12 were also differential-selected. \feat{GCS_std} and \feat{Temp_median} were not differential-selected but were supported by held-out direction and CoxPH association. Overall, neurological status, renal markers, lactate, urine-output summaries, age, and selected respiratory or cardiovascular variables showed convergent mortality-associated evidence. These convergent clinical-support patterns are summarized in Figure~\ref{fig:clinical_support}. Additional held-out effect-size validation, top replicated differential features, extended CoxPH results, and clinical-domain composition are shown in Appendix Figure~\ref{fig:supp_differential_coxph}.
+
+\resultsectionfigure{Explanation reliability across models and attribution methods}{0.94}{0.62}{Figure_4/figure4_main.png}{
+\textbf{Explanation reliability across folds, models, and attribution methods.}
+\textbf{a)} Cross-fold explanation stability was measured as mean pairwise top-20 Jaccard overlap across five stratified folds.
+\textbf{b)} Pairwise method agreement was measured using top-20 Jaccard overlap across logistic regression coefficients, linear SVM coefficients, XGBoost gain, and XGBoost permutation importance.
+\textbf{c)} Shared top-ranked clinical features were selected by at least two attribution methods and mapped to clinical domains.
+}{fig:explanation_reliability}
+
+Cross-fold top-20 stability was moderate and similar across models: logistic regression had mean Jaccard overlap 0.428 (SD 0.077), linear SVM had 0.427 (SD 0.071), and XGBoost had 0.417 (SD 0.065). Method agreement was higher between the two coefficient-based methods (LR-SVM Jaccard 0.429) but much lower between linear and tree-based explanations, including LR-XGBoost gain 0.081, LR-XGBoost permutation 0.053, SVM-XGBoost gain 0.081, and SVM-XGBoost permutation 0.026. Agreement between XGBoost gain and XGBoost permutation importance was also limited (0.176). Shared features selected by at least two methods included \feat{GCS_last}, \feat{PaCO2_count}, \feat{Urine_mean}, \feat{WBC_mean}, \feat{pH_median}, \feat{BUN_last}, \feat{WBC_max}, \feat{static_Age}, \feat{GCS_std}, \feat{Platelets_min}, \feat{Urine_total}, and \feat{pH_last}. These features mapped to neurological, renal, metabolic or acid-base, hematologic, measurement-process, and static demographic domains. The explanation stability, method-agreement, and shared-feature patterns are shown in Figure~\ref{fig:explanation_reliability}. Appendix Figure~\ref{fig:supp_false_signal_domain} shows that Gaussian noise and permuted-feature controls had false explanation rate 0.0 across models, while spurious proxy features reached false explanation rate 1.0, demonstrating shortcut vulnerability under a positive-control stress test.
+
+\resultsectionfigure{Subgroup prediction behavior and AIF360-style fairness audit}{0.94}{0.62}{Figure_5/Figure5_AIF360_fairness_audit_170mm.png}{
+\textbf{Post-hoc AIF360-style subgroup audit of external-test mortality predictions.}
+\textbf{a)} Workflow for applying subgroup metrics after preprocessing, model training, and external-test prediction.
+\textbf{b)} Subgroup composition and observed mortality prevalence in external Set C.
+\textbf{c)} Subgroup AUROC and AUPRC compare predictive performance across age, sex, and ICU admission-type groups.
+\textbf{d)} Formula-equivalent AIF360-style metric summary. Disparate impact is shown as $\log_2(\mathrm{DI})$.
+}{fig:fairness_audit}
+
+Age and ICU admission type showed larger subgroup variation than sex. Patients aged $\leq 65$ years had $n=1,894$, mortality 10.93\%, AUROC 0.878, and AUPRC 0.520, while patients aged $>65$ years had $n=2,106$, mortality 17.95\%, AUROC 0.850, and AUPRC 0.569. Female patients had AUROC 0.860 and AUPRC 0.558, while male patients had AUROC 0.872 and AUPRC 0.545, indicating relatively small sex-based performance differences. ICU-type differences were more pronounced: Cardiac Surgery Recovery Unit patients had mortality 5.26\%, AUROC 0.896, and AUPRC 0.488, while Medical ICU patients had mortality 21.15\%, AUROC 0.833, and AUPRC 0.597. At threshold 0.5, age $>65$ versus $\leq 65$ had SPD 0.163, $\log_2(\mathrm{DI}) \approx 0.87$, EOD 0.080, and AOD 0.107. Female versus male differences were smaller (SPD 0.035, $\log_2(\mathrm{DI}) \approx 0.18$, EOD 0.008, AOD 0.015). ICU-type contrasts were larger, including Other versus CSRU (SPD 0.246, $\log_2(\mathrm{DI}) \approx 1.88$, AOD 0.151) and Other versus Medical ICU (SPD -0.216, $\log_2(\mathrm{DI}) \approx -1.02$, AOD -0.144). These results do not establish clinical unfairness by themselves, but they identify subgroups where threshold-dependent prediction behavior requires closer review. The main subgroup audit is summarized in Figure~\ref{fig:fairness_audit}. Appendix Figure~\ref{fig:supp_aif360_diagnostics} provides supplementary subgroup diagnostics, including observed-versus-predicted high-risk rates, confusion-matrix-derived rates, ICU-type one-versus-rest details, and threshold sensitivity.
+
+\resultsectionfigure{Temporal risk prediction and trajectory-level mortality signals}{0.90}{0.64}{Figure_6/Figure_temporal_main_170mm.png}{
+\textbf{Temporal sequence modeling and Markov-chain trajectory analysis.}
+\textbf{a)} First-48-hour ICU measurements were converted into 12 four-hour bins for Medformer prediction and Markov trajectory extraction.
+\textbf{b)} External-test Medformer precision-recall curve with AUROC, AUPRC, F1-score, and Brier score.
+\textbf{c)} Medformer calibration curve.
+\textbf{d)} Time-bin perturbation importance measured by AUPRC decrease.
+\textbf{e)} Death-minus-survivor Markov transition probability differences.
+\textbf{f)} Standardized mean differences for selected trajectory features.
+}{fig:temporal_trajectory}
+
+The Medformer temporal model achieved AUROC 0.835, AUPRC 0.495, F1-score 0.424, and Brier score 0.099 on external Set C. This represented reasonable temporal discrimination but did not exceed the strongest tabular XGBoost model. Time-bin perturbation identified the 44--48 hour window as the dominant temporal window, with smaller contributions from earlier and mid-window bins. Markov transition differences showed that deaths had lower stable-state persistence and greater movement toward higher-severity states. Trajectory-feature standardized mean differences further showed that deaths were associated with higher late severity, higher mean severity, and higher final state, while survivors had more stable time and stronger stable-to-stable transition behavior. These temporal findings in Figure~\ref{fig:temporal_trajectory} support the interpretation that mortality risk reflected deterioration trajectories over the first 48 hours, while remaining complementary to the main tabular model evaluation.
+
+\section{Discussion}
+
+This study evaluated ICU mortality models using both predictive performance and explanation reliability. External-test results showed that high discrimination can coexist with meaningful calibration differences. XGBoost provided the strongest overall discrimination-calibration profile among the tabular models, while the multilayer perceptron achieved the highest F1-score and logistic regression showed weaker calibration.
+
+The clinical support analysis showed that several model-associated features were also supported by model-independent and survival-style evidence. Features such as GCS, BUN, urine-output summaries, lactate, age, and creatinine appeared across multiple analyses. These overlapping signals were interpreted as more credible than features identified by attribution alone.
+
+The explanation reliability analysis showed that explanations were moderately stable within models but only partially consistent across attribution methods. The false-signal sensitivity analysis further identified an important vulnerability: random noise and permuted features were not selected as important, but spurious proxy features were consistently ranked highly. This suggests that attribution methods can detect predictive shortcuts even when those shortcuts are not clinically causal or appropriate.
+
+The subgroup audit showed that model behavior differed across clinically relevant patient groups, especially ICU admission-type groups. The temporal analysis further showed that mortality risk was associated with trajectory-level deterioration patterns, including higher late severity and reduced stability over the first 48 hours.
+
+Several limitations should be considered. Explanation reliability does not establish causality. CoxPH modeling depends on assumptions about survival time and censoring. Subgroup analyses may be affected by subgroup size, outcome imbalance, and threshold choice. The AIF360-style audit used formula-equivalent metrics and did not apply mitigation. Medformer and Markov-chain analyses were complementary temporal analyses and should not be interpreted as the primary model comparison. Finally, the spurious proxy stress test demonstrates shortcut vulnerability but does not identify all possible sources of clinical confounding.
+
+\section{Conclusions}
+
+In ICU mortality prediction, strong model performance alone is not sufficient to establish trustworthy clinical interpretation. This study proposes an explanation reliability framework that evaluates whether model explanations are stable across folds, consistent across attribution methods, robust to false signals, clinically supported, and subgroup-aware. By combining external validation, calibration, explanation reliability, clinical support analyses, subgroup auditing, and temporal trajectory modeling, this workflow provides a more complete evaluation of clinical machine learning models for high-stakes risk prediction.
+
+\section*{Acknowledgements}
+
+The authors thank the STEM Fellowship Inter-University Health Data and AI Inquiry Program for supporting this research project.
+
+\section*{References}
+
+% References will be added here in Vancouver style.
+% Example in-text citation format: [1], [2], [3].
+
+
+\clearpage
+\onecolumn
+\appendix
+
+\section*{Appendix}
+
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\theHfigure}{S\arabic{figure}}
+\setcounter{figure}{0}
+
+\suppwidefigure{0.92}{Figure_1/Supplementary_FigureS1_cohort_characteristics_170mm.png}{
+\textbf{Supplementary cohort characteristics for the ICU mortality prediction dataset.}
+\textbf{a)} Mortality prevalence is shown separately for source Sets A, B, and C.
+\textbf{b)} Sex distribution is shown for development and external test cohorts.
+\textbf{c)} Static variable availability is summarized across cohorts.
+\textbf{d)} SAPS-I and SOFA distributions are compared between cohorts.
+\textbf{e)} Dynamic parameter counts summarize observed clinical variables per patient.
+\textbf{f)} Observation-window coverage summarizes patients with measurements beyond 24 and 47 hours.
+}{fig:supp_cohort_characteristics}
+
+\clearpage
+\suppwidefigure{0.92}{Figure_2/Supplementary_FigureS3_feature_importance_support_170mm.png}{
+\textbf{Supplementary model-specific feature-importance summaries.}
+\textbf{a)} Absolute standardized logistic regression coefficients identify influential linear-model features.
+\textbf{b)} XGBoost native feature importance identifies variables frequently used by the gradient-boosted tree model.
+}{fig:supp_feature_importance}
+
+\clearpage
+\suppwidefigure{0.92}{Figure_3/Supplementary_FigureS3_differential_coxph_details_170mm.png}{
+\textbf{Supplementary differential and CoxPH support analyses.}
+\textbf{a)} Held-out effect-size validation compares training and held-out standardized mean differences.
+\textbf{b)} Top replicated differential features are ranked by standardized mean difference.
+\textbf{c)} Extended CoxPH forest plot shows hazard ratios for additional variables.
+\textbf{d)} Clinical-domain composition summarizes domains represented among selected differential features.
+}{fig:supp_differential_coxph}
+
+\clearpage
+\suppwidefigure{0.92}{Figure_4/figure4_supplementary.png}{
+\textbf{Supplementary false-signal sensitivity and clinical-domain composition of explanations.}
+\textbf{a)} False explanation rate after injecting Gaussian noise, permuted real-feature controls, and spurious proxy features.
+\textbf{b)} Clinical-domain composition among top-20 features for each attribution method.
+}{fig:supp_false_signal_domain}
+
+\clearpage
+\suppwidefigure{0.92}{Figure_5/Supplementary_FigureS_AIF360_subgroup_diagnostics_170mm.png}{
+\textbf{Supplementary subgroup diagnostics supporting the AIF360-style fairness audit.}
+\textbf{a)} Observed mortality and predicted high-risk rates across subgroups.
+\textbf{b)} Confusion-matrix-derived subgroup rates.
+\textbf{c)} ICU-type one-versus-rest fairness metric details.
+\textbf{d)} Threshold sensitivity of fairness metrics across classification thresholds.
+}{fig:supp_aif360_diagnostics}
+
+\end{document}
