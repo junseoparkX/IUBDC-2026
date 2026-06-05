@@ -1,0 +1,9 @@
+attribute,group,comparison,n,mortality_rate
+Age,<=65,<=65,1894,0.10929250263991552
+Age,>65,>65,2106,0.1794871794871795
+Gender,Female,Female,1768,0.16119909502262444
+Gender,Male,Male,2228,0.13464991023339318
+ICUType,Cardiac Surgery Recovery Unit,Cardiac Surgery Recovery Unit,874,0.05263157894736842
+ICUType,Coronary Care Unit,Coronary Care Unit,602,0.11794019933554817
+ICUType,Medical ICU,Medical ICU,1376,0.21148255813953487
+ICUType,Surgical ICU,Surgical ICU,1148,0.15418118466898956

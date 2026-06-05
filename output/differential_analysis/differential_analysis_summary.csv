@@ -1,2 +1,0 @@
-n_train_samples,n_test_samples,n_features_original,n_features_tested,n_constant_features_removed,training_mortality_rate,n_selected_features,test_mortality_rate,test_effect_direction_consistency
-8000,4000,243,236,7,0.14025,91,0.14625,1.0

@@ -1,0 +1,2 @@
+model,selection_metric,best_cv_roc_auc,logisticregression__C,logisticregression__class_weight,logisticregression__penalty
+logistic_regression,cv_roc_auc,0.8523078791947716,0.1,balanced,l1

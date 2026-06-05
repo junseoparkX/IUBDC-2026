@@ -1,0 +1,9 @@
+split,ICUType_label,n,percent
+train,Cardiac Surgery Recovery Unit,1656,20.7
+train,Coronary Care Unit,1167,14.5875
+train,Medical ICU,2917,36.4625
+train,Surgical ICU,2260,28.25
+test,Cardiac Surgery Recovery Unit,874,21.85
+test,Coronary Care Unit,602,15.05
+test,Medical ICU,1376,34.4
+test,Surgical ICU,1148,28.7

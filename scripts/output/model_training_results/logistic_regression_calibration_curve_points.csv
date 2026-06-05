@@ -1,0 +1,11 @@
+model,bin_id,mean_predicted_probability,observed_event_rate
+logistic_regression,0,0.026824441561219305,0.0075
+logistic_regression,1,0.05874383896307907,0.0025
+logistic_regression,2,0.0980766599668336,0.01
+logistic_regression,3,0.1501739532749745,0.0225
+logistic_regression,4,0.21728045850519945,0.05
+logistic_regression,5,0.30976787345807427,0.09
+logistic_regression,6,0.4278675840339943,0.1625
+logistic_regression,7,0.5661701414276518,0.2075
+logistic_regression,8,0.7393190072428859,0.32
+logistic_regression,9,0.9083511405531831,0.59

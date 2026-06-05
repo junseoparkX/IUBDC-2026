@@ -1,0 +1,37 @@
+feature,clinical_domain,candidate_source
+GCS_last,Neurological,shared_top30_ml
+BUN_last,Renal,shared_top30_ml
+static_Age,Static / demographic,shared_top30_ml
+Lactate_last,Metabolic,shared_top30_ml
+Urine_mean,Renal,shared_top30_ml
+GCS_mean,Neurological,shared_top30_ml
+Urine_total,Renal,shared_top30_ml
+Creatinine_median,Renal,shared_top30_ml
+GCS_std,Neurological,shared_top30_ml
+PaO2_median,Respiratory,shared_top30_ml
+Temp_median,Other,shared_top30_ml
+HR_mean,Cardiovascular,shared_top30_ml
+GCS_median,Neurological,top_differential
+GCS_max,Neurological,top_differential
+BUN_min,Renal,top_differential
+BUN_mean,Renal,top_differential
+BUN_median,Renal,top_differential
+BUN_max,Renal,top_differential
+BUN_first,Renal,top_differential
+n_unique_parameters,Measurement / missingness,top_differential
+HCO3_last,Metabolic,top_differential
+FiO2_count,Respiratory,top_differential
+Na_count,Metabolic,top_differential
+MechVent_count,Respiratory,top_differential
+Glucose_count,Metabolic,top_differential
+K_count,Metabolic,top_differential
+Urine_last,Renal,top_differential
+HCO3_min,Metabolic,top_differential
+HCO3_count,Metabolic,top_differential
+HCO3_mean,Metabolic,top_differential
+Lactate_count,Metabolic,top_differential
+HCO3_median,Metabolic,top_differential
+Lactate_missing,Metabolic,top_differential
+BUN_count,Renal,top_differential
+Creatinine_count,Renal,top_differential
+Lactate_mean,Metabolic,top_differential

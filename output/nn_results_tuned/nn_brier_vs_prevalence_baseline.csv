@@ -1,3 +1,0 @@
-split,death_rate,prevalence_baseline_brier,model_brier,brier_skill_score,model_better_than_baseline
-internal_validation,0.14,0.1204,0.0866406207485181,0.2803935153777566,True
-external_test,0.14625,0.1248609375,0.09093751581891249,0.2716896281600282,True

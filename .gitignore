@@ -13,3 +13,9 @@ output/time_series_test_a_plus_b_train_c_test.csv
 
 # Windows metadata
 desktop.ini
+
+# Large generated time-series CSV files
+scripts/**/time_series_train_a_plus_b_train_c_test.csv
+scripts/**/time_series_test_a_plus_b_train_c_test.csv
+output/time_series_train_a_plus_b_train_c_test.csv
+output/time_series_test_a_plus_b_train_c_test.csv

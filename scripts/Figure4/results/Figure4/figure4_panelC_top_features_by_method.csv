@@ -1,0 +1,81 @@
+method,rank,feature,domain
+LR coef.,1,WBC_mean,Hematologic
+LR coef.,2,pH_median,Metabolic / acid-base
+LR coef.,3,Platelets_min,Hematologic
+LR coef.,4,WBC_max,Hematologic
+LR coef.,5,PaO2_count,Measurement process
+LR coef.,6,NIMAP_missing,Measurement process
+LR coef.,7,Creatinine_max,Renal
+LR coef.,8,Urine_mean,Renal
+LR coef.,9,GCS_mean,Neurological
+LR coef.,10,pH_last,Metabolic / acid-base
+LR coef.,11,DiasABP_mean,Cardiovascular
+LR coef.,12,HR_mean,Cardiovascular
+LR coef.,13,Platelets_last,Hematologic
+LR coef.,14,Creatinine_min,Renal
+LR coef.,15,BUN_last,Renal
+LR coef.,16,NIMAP_median,Cardiovascular
+LR coef.,17,K_mean,Other clinical
+LR coef.,18,GCS_last,Neurological
+LR coef.,19,PaCO2_missing,Measurement process
+LR coef.,20,PaCO2_count,Measurement process
+SVM coef.,1,pH_median,Metabolic / acid-base
+SVM coef.,2,WBC_max,Hematologic
+SVM coef.,3,pH_last,Metabolic / acid-base
+SVM coef.,4,WBC_mean,Hematologic
+SVM coef.,5,PaO2_count,Measurement process
+SVM coef.,6,BUN_mean,Renal
+SVM coef.,7,PaCO2_count,Measurement process
+SVM coef.,8,DiasABP_count,Measurement process
+SVM coef.,9,Creatinine_max,Renal
+SVM coef.,10,pH_first,Metabolic / acid-base
+SVM coef.,11,Platelets_min,Hematologic
+SVM coef.,12,NIMAP_missing,Measurement process
+SVM coef.,13,BUN_median,Renal
+SVM coef.,14,pH_std,Metabolic / acid-base
+SVM coef.,15,DiasABP_mean,Cardiovascular
+SVM coef.,16,SysABP_count,Measurement process
+SVM coef.,17,NIDiasABP_count,Measurement process
+SVM coef.,18,PaCO2_missing,Measurement process
+SVM coef.,19,Urine_mean,Renal
+SVM coef.,20,NIDiasABP_missing,Measurement process
+XGB gain,1,GCS_last,Neurological
+XGB gain,2,BUN_last,Renal
+XGB gain,3,Urine_total,Renal
+XGB gain,4,BUN_min,Renal
+XGB gain,5,BUN_mean,Renal
+XGB gain,6,PaCO2_count,Measurement process
+XGB gain,7,GCS_median,Neurological
+XGB gain,8,PaCO2_median,Respiratory
+XGB gain,9,BUN_median,Renal
+XGB gain,10,static_ICUType,Static / demographic
+XGB gain,11,Urine_max,Renal
+XGB gain,12,FiO2_missing,Measurement process
+XGB gain,13,static_Age,Static / demographic
+XGB gain,14,PaO2_first,Respiratory
+XGB gain,15,Temp_last,Metabolic / acid-base
+XGB gain,16,GCS_std,Neurological
+XGB gain,17,PaO2_mean,Respiratory
+XGB gain,18,Temp_mean,Metabolic / acid-base
+XGB gain,19,GCS_min,Neurological
+XGB gain,20,PaCO2_mean,Respiratory
+XGB perm.,1,GCS_last,Neurological
+XGB perm.,2,static_Age,Static / demographic
+XGB perm.,3,GCS_std,Neurological
+XGB perm.,4,Urine_total,Renal
+XGB perm.,5,Urine_count,Measurement process
+XGB perm.,6,static_ICUType,Static / demographic
+XGB perm.,7,Glucose_last,Metabolic / acid-base
+XGB perm.,8,Lactate_last,Metabolic / acid-base
+XGB perm.,9,HR_last,Cardiovascular
+XGB perm.,10,GCS_count,Measurement process
+XGB perm.,11,GCS_median,Neurological
+XGB perm.,12,PaO2_median,Respiratory
+XGB perm.,13,Urine_mean,Renal
+XGB perm.,14,Platelets_mean,Hematologic
+XGB perm.,15,Urine_last,Renal
+XGB perm.,16,Urine_median,Renal
+XGB perm.,17,Urine_missing,Measurement process
+XGB perm.,18,BUN_std,Renal
+XGB perm.,19,Creatinine_median,Renal
+XGB perm.,20,Creatinine_last,Renal

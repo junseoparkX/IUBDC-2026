@@ -1,4 +1,0 @@
-dataset,n_total,n_valid_for_cox,n_excluded_nonpositive_time,n_events_in_hospital_death_valid,event_rate_valid,median_cox_time_days_valid,min_cox_time_days_valid,max_cox_time_days_valid
-all,12000,11833,167,1707,0.14425758472069636,10.0,1.0,295.0
-train_AB,8000,7886,114,1122,0.1422774537154451,10.0,1.0,171.0
-test_C,4000,3947,53,585,0.14821383329110718,9.0,1.0,295.0

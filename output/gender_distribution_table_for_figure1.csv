@@ -1,7 +1,0 @@
-split,Gender_label,n,percent
-train,Female,3493,43.6625
-train,Male,4499,56.2375
-train,Unknown,8,0.1
-test,Female,1768,44.2
-test,Male,2228,55.7
-test,Unknown,4,0.1

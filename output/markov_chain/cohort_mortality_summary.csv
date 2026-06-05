@@ -1,3 +1,0 @@
-split,n_patients,n_deaths,mortality_rate
-train,8000,1122,0.14025
-test,4000,585,0.14625

@@ -1,3 +1,0 @@
-split,n_patients,mortality_n_percent,age_median_iqr,female_n_percent,male_n_percent,dynamic_measurements_median_iqr,dynamic_parameters_median_iqr
-train,8000,"1,122 (14.0%)","67.0 [53.0, 78.0]","3,493 (43.7%)","4,499 (56.2%)","392.0 [331.0, 468.0]","26.0 [23.0, 29.0]"
-test,4000,585 (14.6%),"67.0 [54.0, 78.0]","1,768 (44.2%)","2,228 (55.7%)","390.0 [330.0, 469.0]","26.0 [23.0, 29.0]"

@@ -11,3 +11,9 @@ scripts/Figure3_Differential_Analysis/data/*.csv
 # Large generated time-series CSV files
 **/time_series_train_a_plus_b_train_c_test.csv
 **/time_series_test_a_plus_b_train_c_test.csv
+
+# Auto-excluded large files over 50MB
+
+# Large generated time-series files
+**/time_series_train_a_plus_b_train_c_test.csv
+**/time_series_test_a_plus_b_train_c_test.csv

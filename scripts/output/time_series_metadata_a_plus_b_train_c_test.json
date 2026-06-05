@@ -1,0 +1,26 @@
+{
+  "tag": "a_plus_b_train_c_test",
+  "input_files": {
+    "set_a_time_series": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\data\\set_a_long_timeseries.csv",
+    "set_b_time_series": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\data\\set_b_long_timeseries.csv",
+    "set_c_time_series": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\data\\set_c_long_timeseries.csv"
+  },
+  "output_files": {
+    "time_series_train": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\output\\time_series_train_a_plus_b_train_c_test.csv",
+    "time_series_test": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\output\\time_series_test_a_plus_b_train_c_test.csv",
+    "time_series_y_train": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\output\\time_series_y_train_a_plus_b_train_c_test.csv",
+    "time_series_y_test": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\output\\time_series_y_test_a_plus_b_train_c_test.csv",
+    "summary": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\output\\time_series_split_summary_a_plus_b_train_c_test.csv",
+    "dropped_rows_summary": "c:\\Users\\junse\\Documents\\research\\IUBDC 2026\\output\\time_series_dropped_rows_summary_a_plus_b_train_c_test.csv"
+  },
+  "cleaning_rules": {
+    "drop_rows_with_missing_parameter": true,
+    "drop_recordid_parameter_rows": true
+  },
+  "notes": [
+    "Set A and Set B are combined as the training time-series split.",
+    "Set C is kept as the held-out test time-series split.",
+    "No preprocessing decision is learned from Set C.",
+    "The RecordID column is kept as an identifier, but rows where Parameter == RecordID are dropped by default."
+  ]
+}

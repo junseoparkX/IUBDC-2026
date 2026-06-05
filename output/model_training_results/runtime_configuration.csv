@@ -1,2 +1,0 @@
-random_state,torch_device,xgb_requested_device,xgb_tree_method,drop_excluded_cols
-42,cpu,cuda,hist,False

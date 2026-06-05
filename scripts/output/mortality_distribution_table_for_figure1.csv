@@ -1,0 +1,5 @@
+split,mortality_label,n,percent
+train,Died,1122,14.025
+train,Survived,6878,85.975
+test,Died,585,14.625
+test,Survived,3415,85.375
